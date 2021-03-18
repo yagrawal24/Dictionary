@@ -10,97 +10,136 @@ import java.util.zip.DataFormatException;
 
 public class DictionaryDataReader {
 
+  /**
+   * readFile() static method that takes in a dictionary file and returns a list of Word objects
+   * that contain their definitions and origin
+   * 
+   * 
+   * @param fileName - dictionary file that will be read in
+   * @return List<Word> - word list that contains all the words in the dictionary and their
+   *         respective definitions and origin
+   * 
+   * @throws FileNotFoundException - thrown when the file name does not point to a legal file
+   * @throws DataFormatException   - thrown when the data in the file does not match up with the
+   *                               specific format needed to read in the word
+   * @throws IOException           - thrown when issues arise when parsing through data
+   */
   public static List<Word> readFile(String fileName)
       throws FileNotFoundException, DataFormatException, IOException {
+
+
 
     FileReader dictionary = new FileReader(fileName);
     BufferedReader parseDictionary = new BufferedReader(dictionary);
 
+    String[] allTypes = {"adv.", "Adv.", "—adv.", "-Adv.", "v.", "V.", "—v.", "-V.", "adj.", "Adj.",
+        "—adj.", "-Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "-N>", "n.pl.",
+        "N.pl", "predic.", "Predic.", "—predic.", "gram.", "Gram.", "comb.", "Comb.", "colloq.", "Collo1.",
+        "hist.", "Hist.", "esp.", "Esp.", "-prep","—prep.","-Prep", "naut.", "Naut.", "aeron.", "Aeron.",
+        "Pron.", "pron.", "abbr.", "Abbr.", "var.", "Var.", "contr.", "Contr.", "attrib.",
+        "Attrib.", "int.", "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
+        "symb.", "Symb.", "&"};
+
+    List<String> allParts = Arrays.asList(allTypes);
+
     List<Word> wordList = new ArrayList<Word>();
 
     String line = "";
-    
     while ((line = parseDictionary.readLine()) != null) {
-
-
-
       if (!line.isBlank()) {
-        String[] wordContent = line.split("\\s+");
-        if (wordContent.length > 1) { // make sure that we are not reading a word that is simply an
-                                      // A, B, C, D etc
+        Scanner parseLine = new Scanner(line);
+        
+        String[] lineContent = line.split("\\s+");
 
-          String word = "";
-          List<String> definitions = new ArrayList<String>();
-          String origin = "";
-          List<String> partsOfSpeech = new ArrayList<String>();
+        // first word will always be atleast the first word of the word
+        String word = lineContent[0];
+        
+        if(word.length() <= 1)
+          continue;
+        
+        String partsOfSpeech = "";
 
-          int startIndex = 1;
-          word = wordContent[0];
-          if (!wordContent[1].contains(".")) {
-            word += " " + wordContent[1];
-            startIndex = 2;
-          }
+        // do a manual check to see if the second word is also part of the word
+        String wordOrPOF = lineContent[1];
 
-          String currentAspect = "d"; // reading in a definition when "d", reading in an origin when
-                                      // "o"
-
-          String currentDef = "";
-
-          if (!(wordContent[1].equalsIgnoreCase("prefix")
-              || wordContent[1].equalsIgnoreCase("suffix"))) {
-            for (int i = startIndex; i < wordContent.length; i++) {
-              String parseWord = wordContent[i];
+        if (!allParts.contains(wordOrPOF)) {
+          word += " " + wordOrPOF;
+        } else if (allParts.contains(wordOrPOF)) {
+          partsOfSpeech += wordOrPOF;
+        }
+        
+        
 
 
-                if (currentAspect.equals("d")) {
+        List<String> definitions = new ArrayList<String>();
+        boolean originMode = false; // if false, reading in a definition, if true, reading in an
+                                    // origin.
+        String origin = "";
+        String definitionToAdd = "";
+        for(int j = 2; j < lineContent.length; j++) {
+          String parseWord = lineContent[j];
 
-                  if (isNumber(parseWord)) {
-                    if (currentDef.length() != 0 && Integer.parseInt(parseWord) != 1) {
-                      currentDef = currentDef.trim();
-                      definitions.add(currentDef);
-                      currentDef = "";
-                    }
-                  } else if (parseWord.contains("[")) {
-                    currentDef.trim();
-                    definitions.add(currentDef);
-                    currentAspect = "o";
-                    origin += parseWord + " ";
-                  } else
-                    currentDef += parseWord + " ";
-
-                } else if (currentAspect.equals("o")) {
-                  origin += parseWord + " ";
-                }
               
 
+          if (allParts.contains(parseWord)) {
+            partsOfSpeech += " " + parseWord;
+          } else {
+            // At this point, the rest of the line should be definitions and then the origin
+            if (!originMode) {
+              if (isNumber(parseWord)) {
+                if (definitionToAdd.length() != 0 && Integer.parseInt(parseWord) != 1) { // add the definition and then reset the
+                                                     // definition to be blank string for the
+                                                     // potential next definition
+                  definitions.add(definitionToAdd);
+                  definitionToAdd = "";
+                }
+              } else if (parseWord.contains("[")) {
+                definitions.add(definitionToAdd);
+                originMode = true;
+                origin += " " + parseWord;
+
+              }
+              else {
+                definitionToAdd += " " + parseWord;
+              }
 
             }
-
-            origin = origin.trim();
-
-            currentDef = currentDef.trim();
-            if (currentAspect.equals("d")) {
-              definitions.add(currentDef);
+            else { // now parsing through the origin
+              origin += " " + parseWord;
             }
-
-
-
-            Word toAdd = new Word(word, definitions, origin);
-            wordList.add(toAdd);
           }
 
         }
+        
+        
+        // if still in definition mode, add the definition to the list
+        
+        if(!originMode)
+          definitions.add(definitionToAdd);
+        
+        // if the line has a usage tag, add this word as another definition of the previous word
+        if(word.equals("-Usage")) {
+          wordList.get(wordList.size() - 1).addDefinition("Usage: " + definitionToAdd);
+        }
+        else {
+          Word toAdd = new Word(word, definitions, origin);
+          wordList.add(toAdd);
+        }
+
       }
-
-
-
     }
 
     parseDictionary.close();
     return wordList;
-
   }
 
+  /**
+   * isNumber() private helper to determine if the given string is a number of not (used when words
+   * contain multiple definitions)
+   * 
+   * @param str - String to est
+   * @return boolean - true if string is a number, false oherwise.
+   */
   private static boolean isNumber(String str) {
     try {
       int num = Integer.parseInt(str);
