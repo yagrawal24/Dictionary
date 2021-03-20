@@ -224,7 +224,7 @@ public class Frontend {
     public static void main(String[] args) {
         // Intro Text
         System.out.println("Welcome to the dictionary program\n");
-        System.out.println("Word of the day: ");
+        System.out.println("Word of the day: " + printWord( (new Random()).nextInt(backend.size()) ));
 
         // Method Calls
         promptMode();
