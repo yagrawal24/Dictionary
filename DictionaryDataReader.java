@@ -32,16 +32,18 @@ public class DictionaryDataReader {
     FileReader dictionary = new FileReader(fileName);
     BufferedReader parseDictionary = new BufferedReader(dictionary);
 
-    String[] allTypes = {"adv.", "Adv.", "—adv.", "-Adv.", "v.", "V.", "—v.", "-V.", "adj.", "Adj.",
-        "—adj.", "-Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "-N>", "n.pl.",
+    String[] allTypes = {"adv.", "Adv.", "—adv.", "—Adv.", "v.", "V.", "—v.", "—V.", "adj.", "Adj.",
+        "—adj.", "—Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "—N>", "n.pl.",
         "N.pl", "predic.", "Predic.", "—predic.", "gram.", "Gram.", "comb.", "Comb.", "colloq.", "Collo1.",
-        "hist.", "Hist.", "esp.", "Esp.", "-prep","—prep.","-Prep", "naut.", "Naut.", "aeron.", "Aeron.",
+        "hist.", "Hist.", "esp.", "Esp.", "—prep","—prep.","—Prep", "naut.", "Naut.", "aeron.", "Aeron.",
         "Pron.", "pron.", "abbr.", "Abbr.", "var.", "Var.", "contr.", "Contr.", "attrib.",
-        "Attrib.", "int.", "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
+        "Attrib.", "int.", "—int." , "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
         "symb.", "Symb.", "&"};
+    
+    
 
     List<String> allParts = Arrays.asList(allTypes);
-
+    
     List<Word> wordList = new ArrayList<Word>();
 
     String line = "";
@@ -83,8 +85,7 @@ public class DictionaryDataReader {
 
           if (allParts.contains(parseWord)) {
             partsOfSpeech += " " + parseWord;
-          } else {
-            // At this point, the rest of the line should be definitions and then the origin
+          } else {       // At this point, the rest of the line should be definitions and then the origin
             if (!originMode) {
               if (isNumber(parseWord)) {
                 if (definitionToAdd.length() != 0 && Integer.parseInt(parseWord) != 1) { // add the definition and then reset the
@@ -118,7 +119,7 @@ public class DictionaryDataReader {
           definitions.add(definitionToAdd);
         
         // if the line has a usage tag, add this word as another definition of the previous word
-        if(word.equals("-Usage")) {
+        if(word.equalsIgnoreCase("-Usage")) {
           wordList.get(wordList.size() - 1).addDefinition("Usage: " + definitionToAdd);
         }
         else {
@@ -150,3 +151,4 @@ public class DictionaryDataReader {
     return true;
   }
 }
+
