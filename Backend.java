@@ -42,10 +42,13 @@ public class Backend implements BackendInterface {
     return null;
   }
   
+  public Word get(int random) {
+    return null;
+  }
 
   @Override
-  public void size() {  
-    dictionary.size();
+  public int size() {  
+    return dictionary.size();
   }
 
   @Override
