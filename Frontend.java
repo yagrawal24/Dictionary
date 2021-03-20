@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Random;
 
 public class Frontend {
     // Mode Enums
@@ -15,16 +16,10 @@ public class Frontend {
 
     // Static Class Members
 
-    static BackendDummy backend = new BackendDummy();
+    static Backend backend = new Backend();
     static boolean runLoop = true;
     static Mode currMode;
     static Scanner scnr = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        System.out.println("Welcome to the dictionary program\n");
-        promptMode();
-        enterMode();
-    }
 
     // Static Class Methods
 
@@ -90,17 +85,33 @@ public class Frontend {
 
     static void printWord(String word) {
         try {
-            if(backend.getWord(word) != null && !backend.getWord(word).isEmpty()) { // Found Word
-                List<String> definitions = backend.getDefinition(word);
-                String origin = backend.getOrigin(word);
+            if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
+                List<String> definitions = backend.get(word).getDefinitions();
+                String origin = backend.get(word).getOrigin();
 
-                System.out.println(word.toLowerCase() + " (" + backend.getOrigin(word) + "):");
+                System.out.println(word.toLowerCase() + " (" + backend.get(word).getOrigin() + "):");
                 for(int i = 0; i < definitions.size(); i++) {
                     System.out.println("\t["+i+"] " + definitions.get(i));
                 }
             }
         } catch (NoSuchElementException err) {
-            System.out.println("[ERR] Word not found, try again");
+            System.out.println(err.getMessage());
+        }
+    }
+
+    static void printWord(int word) {
+        try {
+            if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
+                List<String> definitions = backend.get(word).getDefinitions();
+                String origin = backend.get(word).getOrigin();
+
+                System.out.println(word.toLowerCase() + " (" + backend.get(word).getOrigin() + "):");
+                for(int i = 0; i < definitions.size(); i++) {
+                    System.out.println("\t["+i+"] " + definitions.get(i));
+                }
+            }
+        } catch (NoSuchElementException err) {
+            System.out.println(err.getMessage());
         }
     }
 
@@ -154,7 +165,6 @@ public class Frontend {
 
         // Get Input
         String word = scnr.next();
-        word = word.toLowerCase();
 
         // If Input is Valid Character => Switch Modes
         if(word.length() == 1) {
@@ -168,7 +178,7 @@ public class Frontend {
 
     static void randomMode() {
         // Search Word from Dictionary
-        //printWord(word);
+        printWord( (new Random()).nextInt(backend.size()) );
         System.out.println("Enter a char [(A)ddition/(S)earch/(R)andom/(E)xit] to switch modes");
 
         // Get Input
@@ -209,5 +219,15 @@ public class Frontend {
                     break;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        // Intro Text
+        System.out.println("Welcome to the dictionary program\n");
+        System.out.println("Word of the day: ");
+
+        // Method Calls
+        promptMode();
+        enterMode();
     }
 }
