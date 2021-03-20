@@ -133,7 +133,7 @@ public class Frontend {
 
         // Get Definition(s) & Origin
         System.out.println("Type the definition of '" + word + "':");
-        scnr.nextLine(); // Eat newline
+        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
         definitions.add(scnr.nextLine());
         do {
             System.out.println("Would you like to add another definition (y/n): ");
@@ -151,7 +151,7 @@ public class Frontend {
         } while (continuePrompt);
 
         System.out.println("Type the origin of '" + word + "':");
-        scnr.nextLine(); // Eat newline
+        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
         origin = scnr.nextLine();
 
         // Add Word to Dictionary
@@ -164,7 +164,9 @@ public class Frontend {
         System.out.println("(Alternatively, enter a char [(A)ddition/(R)andom/(E)xit] to switch modes)");
 
         // Get Input
-        String word = scnr.next();
+        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
+        String word = scnr.nextLine();
+        System.out.println(word);
 
         // If Input is Valid Character => Switch Modes
         if(word.length() == 1) {
