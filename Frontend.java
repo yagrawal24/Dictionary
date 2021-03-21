@@ -89,7 +89,7 @@ public class Frontend {
                 List<String> definitions = backend.get(word).getDefinitions();
                 String origin = backend.get(word).getOrigin();
 
-                System.out.println(word.toLowerCase() + " (" + backend.get(word).getOrigin() + "):");
+                System.out.println(backend.get(word).getWord().toLowerCase()+backend.get(word).getOrigin() + ":");
                 for(int i = 0; i < definitions.size(); i++) {
                     System.out.println("\t["+i+"] " + definitions.get(i));
                 }
