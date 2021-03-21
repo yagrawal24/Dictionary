@@ -17,7 +17,7 @@ import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
 /**
- * DictionaryDataReader takes a file containing the oxford english dictionary and returns a list of the words contained in this dictionary along with the word's aspects
+ * DictionaryDataReader takes a file containing the oxford english dictionary and returns a list of the words contained in this dictionary along with th
  * 
  * @author teddyarasavelli
  *
@@ -46,12 +46,12 @@ public class DictionaryDataReader {
     FileReader dictionary = new FileReader(fileName);
     BufferedReader parseDictionary = new BufferedReader(dictionary);
 
-    String[] allTypes = {"adv.", "Adv.", "—adv.", "—Adv.", "v.", "V.", "—v.", "—V.", "adj.", "Adj.",
-        "—adj.", "—Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "—N>", "n.pl.",
-        "N.pl", "predic.", "Predic.", "—predic.", "gram.", "Gram.", "comb.", "Comb.", "colloq.", "Collo1.",
-        "hist.", "Hist.", "esp.", "Esp.", "—prep","—prep.","—Prep", "naut.", "Naut.", "aeron.", "Aeron.",
+    String[] allTypes = {"adv.", "Adv.", "-adv.", "-Adv.", "v.", "V.", "-v.", "-V.", "adj.", "Adj.",
+        "-adj.", "-Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "-n.", "-N>", "n.pl.",
+        "N.pl", "predic.", "Predic.", "-predic.", "gram.", "Gram.", "comb.", "Comb.", "colloq.", "Collo1.",
+        "hist.", "Hist.", "esp.", "Esp.", "-prep","-prep.","-Prep", "naut.", "Naut.", "aeron.", "Aeron.",
         "Pron.", "pron.", "abbr.", "Abbr.", "var.", "Var.", "contr.", "Contr.", "attrib.",
-        "Attrib.", "int.", "—int." , "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
+        "Attrib.", "-attrib.", "int.", "-int." , "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
         "symb.", "Symb.", "&"};
     
     
@@ -107,8 +107,6 @@ public class DictionaryDataReader {
               
           if (allParts.contains(parseWord)) {
             POFandTidbits += " " + parseWord;
-
-            
           } else {       // At this point, the rest of the line should be definitions and then the origin
             if (!originMode) {
               if (isNumber(parseWord)) {
@@ -175,4 +173,3 @@ public class DictionaryDataReader {
     return true;
   }
 }
-
