@@ -107,6 +107,8 @@ public class DictionaryDataReader {
               
           if (allParts.contains(parseWord)) {
             POFandTidbits += " " + parseWord;
+
+            
           } else {       // At this point, the rest of the line should be definitions and then the origin
             if (!originMode) {
               if (isNumber(parseWord)) {
@@ -173,3 +175,4 @@ public class DictionaryDataReader {
     return true;
   }
 }
+
