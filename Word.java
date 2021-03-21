@@ -25,6 +25,19 @@ public class Word implements Comparable<Word>{
   }
   
   /**
+   * Constructor that takes in a word, definitions and an origin
+   * 
+   * @param word - String that will be assigned to the word field
+   * @param defs - List<String> that contains definitions for the word
+   * @param origin - String that represents origin of the word
+   */
+  public Word(String word, List<String> defs, String origin) {
+    this.word = word;
+    this.definitions = defs;
+    this.origin = origin;
+  }
+  
+  /**
    * Constructor that takes in the word, list of definitions, origin, and types and initializes the fields to the parameters
    * 
    * @param word - String that will be the word field
