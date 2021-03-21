@@ -25,7 +25,7 @@ public class Frontend {
 
     static void promptMode() {
         // Prompt
-        System.out.println("What mode would you like to enter?");
+        System.out.println("\nWhat mode would you like to enter?");
 
         // Print Out Options Based on First Char
         Mode[] allModes = Mode.values();
@@ -105,7 +105,7 @@ public class Frontend {
                 List<String> definitions = backend.get(word).getDefinitions();
                 String origin = backend.get(word).getOrigin();
 
-                System.out.println(word.toLowerCase() + " (" + backend.get(word).getOrigin() + "):");
+                System.out.println(backend.get(word).getWord().toLowerCase()+backend.get(word).getOrigin() + ":");
                 for(int i = 0; i < definitions.size(); i++) {
                     System.out.println("\t["+i+"] " + definitions.get(i));
                 }
@@ -226,7 +226,8 @@ public class Frontend {
     public static void main(String[] args) {
         // Intro Text
         System.out.println("Welcome to the dictionary program\n");
-        System.out.println("Word of the day: " + printWord( (new Random()).nextInt(backend.size()) ));
+        System.out.print("Word of the day: ");
+        printWord( (new Random()).nextInt(backend.size()) );
 
         // Method Calls
         promptMode();
