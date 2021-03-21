@@ -1,3 +1,11 @@
+// --== CS400 File Header Information ==--
+// Name: Teddy Arasavelli
+// Email: arasavelli@wisc.edu
+// Team: AB
+// TA: Mu Cai
+// Lecturer: Florian Heimerl
+// Notes to Grader: N/A
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +16,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
+/**
+ * DictionaryDataReader takes a file containing the oxford english dictionary and returns a list of the words contained in this dictionary along with the word's aspects
+ * 
+ * @author teddyarasavelli
+ *
+ */
 public class DictionaryDataReader {
 
   /**
@@ -25,23 +39,25 @@ public class DictionaryDataReader {
    * @throws IOException           - thrown when issues arise when parsing through data
    */
   public static List<Word> readFile(String fileName)
-      throws FileNotFoundException, DataFormatException, IOException {
+      throws FileNotFoundException, IOException {
 
 
 
     FileReader dictionary = new FileReader(fileName);
     BufferedReader parseDictionary = new BufferedReader(dictionary);
 
-    String[] allTypes = {"adv.", "Adv.", "—adv.", "-Adv.", "v.", "V.", "—v.", "-V.", "adj.", "Adj.",
-        "—adj.", "-Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "-N>", "n.pl.",
+    String[] allTypes = {"adv.", "Adv.", "—adv.", "—Adv.", "v.", "V.", "—v.", "—V.", "adj.", "Adj.",
+        "—adj.", "—Adj.", "prefix", "Prefix", "suffix", "Suffix", "n.", "N.", "—n.", "—N>", "n.pl.",
         "N.pl", "predic.", "Predic.", "—predic.", "gram.", "Gram.", "comb.", "Comb.", "colloq.", "Collo1.",
-        "hist.", "Hist.", "esp.", "Esp.", "-prep","—prep.","-Prep", "naut.", "Naut.", "aeron.", "Aeron.",
+        "hist.", "Hist.", "esp.", "Esp.", "—prep","—prep.","—Prep", "naut.", "Naut.", "aeron.", "Aeron.",
         "Pron.", "pron.", "abbr.", "Abbr.", "var.", "Var.", "contr.", "Contr.", "attrib.",
-        "Attrib.", "int.", "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
+        "Attrib.", "int.", "—int." , "Int.", "slang", "Slang", "offens.", "Offens.", "pawn.", "Pawn.",
         "symb.", "Symb.", "&"};
+    
+    
 
     List<String> allParts = Arrays.asList(allTypes);
-
+    
     List<Word> wordList = new ArrayList<Word>();
 
     String line = "";
@@ -54,19 +70,28 @@ public class DictionaryDataReader {
         // first word will always be atleast the first word of the word
         String word = lineContent[0];
         
+        // skip lines that contain an A, B, C etc
         if(word.length() <= 1)
           continue;
         
-        String partsOfSpeech = "";
+        String POFandTidbits = "";
 
         // do a manual check to see if the second word is also part of the word
+        
         String wordOrPOF = lineContent[1];
+        
+        int startIndex = 1;
 
         if (!allParts.contains(wordOrPOF)) {
-          word += " " + wordOrPOF;
+          if(!wordOrPOF.contains("(")) {
+            word += " " + wordOrPOF;
+            startIndex = 2;
+          }
         } else if (allParts.contains(wordOrPOF)) {
-          partsOfSpeech += wordOrPOF;
+          POFandTidbits += wordOrPOF;
+          startIndex = 2;
         }
+
         
         
 
@@ -76,15 +101,13 @@ public class DictionaryDataReader {
                                     // origin.
         String origin = "";
         String definitionToAdd = "";
-        for(int j = 2; j < lineContent.length; j++) {
+        for(int j = startIndex; j < lineContent.length; j++) {
           String parseWord = lineContent[j];
 
               
-
           if (allParts.contains(parseWord)) {
-            partsOfSpeech += " " + parseWord;
-          } else {
-            // At this point, the rest of the line should be definitions and then the origin
+            POFandTidbits += " " + parseWord;
+          } else {       // At this point, the rest of the line should be definitions and then the origin
             if (!originMode) {
               if (isNumber(parseWord)) {
                 if (definitionToAdd.length() != 0 && Integer.parseInt(parseWord) != 1) { // add the definition and then reset the
@@ -118,11 +141,11 @@ public class DictionaryDataReader {
           definitions.add(definitionToAdd);
         
         // if the line has a usage tag, add this word as another definition of the previous word
-        if(word.equals("-Usage")) {
+        if(word.equalsIgnoreCase("-Usage")) {
           wordList.get(wordList.size() - 1).addDefinition("Usage: " + definitionToAdd);
         }
         else {
-          Word toAdd = new Word(word, definitions, origin);
+          Word toAdd = new Word(word.toLowerCase(), definitions, origin, POFandTidbits);
           wordList.add(toAdd);
         }
 
