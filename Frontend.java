@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Frontend {
     // Mode Enums
@@ -34,7 +30,11 @@ public class Frontend {
         }
 
         // Set Static Mode to Valid Mode
-        char charMode = scnr.next(".").charAt(0);
+        char charMode;
+        try {
+            charMode = scnr.next(".").charAt(0);
+            scnr.nextLine();
+        } catch (InputMismatchException err) { promptMode(); return; }
         currMode = getModeFromChar(charMode);
     }
 
@@ -84,34 +84,31 @@ public class Frontend {
     }
 
     static void printWord(String word) {
-        try {
-            if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
-                List<String> definitions = backend.get(word).getDefinitions();
-                String origin = backend.get(word).getOrigin();
+        if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
+            List<String> definitions = backend.get(word).getDefinitions();
+            String origin = backend.get(word).getOrigin();
 
-                System.out.println(backend.get(word).getWord().toLowerCase()+backend.get(word).getOrigin() + ":");
-                for(int i = 0; i < definitions.size(); i++) {
-                    System.out.println("\t["+i+"] " + definitions.get(i));
-                }
+            System.out.println(backend.get(word).getWord().toLowerCase()+" ("+backend.get(word).getOrigin() + "):");
+            for(int i = 0; i < definitions.size(); i++) {
+                System.out.println("\t["+i+"] " + definitions.get(i));
             }
-        } catch (NoSuchElementException err) {
-            System.out.println(err.getMessage());
+        } else {
+            System.out.println("Word not found");
+            System.out.println("Perhaps you meant " + backend.getSuggestions(word) + "?");
         }
     }
 
     static void printWord(int word) {
-        try {
-            if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
-                List<String> definitions = backend.get(word).getDefinitions();
-                String origin = backend.get(word).getOrigin();
+        if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
+            List<String> definitions = backend.get(word).getDefinitions();
+            String origin = backend.get(word).getOrigin();
 
-                System.out.println(backend.get(word).getWord().toLowerCase()+backend.get(word).getOrigin() + ":");
-                for(int i = 0; i < definitions.size(); i++) {
-                    System.out.println("\t["+i+"] " + definitions.get(i));
-                }
+            System.out.println(backend.get(word).getWord().toLowerCase()+" ("+backend.get(word).getOrigin() + "):");
+            for(int i = 0; i < definitions.size(); i++) {
+                System.out.println("\t["+i+"] " + definitions.get(i));
             }
-        } catch (NoSuchElementException err) {
-            System.out.println(err.getMessage());
+        } else {
+            System.out.println("Word not found");
         }
     }
 
@@ -120,7 +117,7 @@ public class Frontend {
         System.out.println("(Alternatively, enter a char [(S)earch/(R)andom/(E)xit] to switch modes)");
 
         // Get Input
-        String word = scnr.next();
+        String word = scnr.nextLine();
         List<String> definitions = new ArrayList<String>();
         boolean continuePrompt = true;
         String origin;
@@ -132,16 +129,14 @@ public class Frontend {
         }
 
         // Get Definition(s) & Origin
-        System.out.println("Type the definition of '" + word + "':");
-        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
+        System.out.print("Type the definition of '" + word + "': ");
         definitions.add(scnr.nextLine());
         do {
-            System.out.println("Would you like to add another definition (y/n): ");
+            System.out.print("Would you like to add another definition (y/n): ");
             char c = scnr.next(".").charAt(0);
-
+            scnr.nextLine();
             if(c == 'y') {
-                System.out.println("Type the definition of '" + word + "':");
-                scnr.nextLine(); // Eat newline
+                System.out.print("Type the definition of '" + word + "': ");
                 definitions.add(scnr.nextLine());
             } else if(c == 'n') {
                 continuePrompt = false;
@@ -149,14 +144,16 @@ public class Frontend {
                 continue;
             }
         } while (continuePrompt);
-
-        System.out.println("Type the origin of '" + word + "':");
-        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
+        System.out.print("Type the origin of '" + word + "': ");
         origin = scnr.nextLine();
 
         // Add Word to Dictionary
-        backend.insert(word, definitions, origin);
-        System.out.println("'"+word+"' was successfully added to your dictionary!\n");
+        try {
+            backend.insert(word, definitions, origin);
+            System.out.println("\n'"+word+"' was successfully added to your dictionary!\n");
+        } catch (IllegalArgumentException|NullPointerException err) {
+            System.out.println("\nDictionary already contains this word!");
+        }
     }
 
     static void searchMode() {
@@ -164,9 +161,7 @@ public class Frontend {
         System.out.println("(Alternatively, enter a char [(A)ddition/(R)andom/(E)xit] to switch modes)");
 
         // Get Input
-        if(scnr.hasNextLine()) scnr.nextLine(); // Clean Next Line
         String word = scnr.nextLine();
-        System.out.println(word);
 
         // If Input is Valid Character => Switch Modes
         if(word.length() == 1) {
