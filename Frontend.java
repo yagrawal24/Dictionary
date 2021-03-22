@@ -180,6 +180,7 @@ public class Frontend {
 
         // Get Input
         String word = scnr.next();
+        scnr.nextLine();
 
         // If Input is Valid Character => Switch Modes
         if(word.length() == 1) {
