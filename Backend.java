@@ -21,8 +21,8 @@ import java.util.zip.DataFormatException;
  */
 
 public class Backend implements BackendInterface {
-  private RedBlackTree<Word> dictionary;
-  List<Word> wordsList;
+  protected RedBlackTree<Word> dictionary;
+  protected List<Word> wordsList;
   
   /**
    * Backend constructor. Instantiates the data wrangler class, which returns a list of word
@@ -31,11 +31,11 @@ public class Backend implements BackendInterface {
   public Backend() {
     dictionary = new RedBlackTree<Word>();
     try {
-      wordsList = DictionaryDataReader.readFile("Oxford_English_Dictionary.txt");
+      wordsList = DictionaryDataReader.readFile("FinalDictionary.txt"); // Dictionary file //
       for (int i = 0; i < wordsList.size(); i ++) {
         dictionary.insert(wordsList.get(i));
       }
-    } catch (DataFormatException | IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

@@ -1,4 +1,4 @@
-/ --== CS400 File Header Information ==--
+// --== CS400 File Header Information ==--
 // Name: Teddy Arasavelli
 // Email: arasavelli@wisc.edu
 // Team: AB
@@ -12,8 +12,6 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Stack;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Red-Black Tree implementation with a Node inner class for representing the nodes of the tree.
@@ -111,8 +109,6 @@ public class RedBlackTree<T extends Comparable<T>> implements SortedCollectionIn
       boolean returnValue = insertHelper(newNode, root); // recursively insert into subtree
       if (returnValue)
         size++;
-      else
-        throw new IllegalArgumentException("This RedBlackTree already contains that value.");
 
       this.root.isBlack = true;
       return returnValue;
@@ -433,4 +429,11 @@ public class RedBlackTree<T extends Comparable<T>> implements SortedCollectionIn
     return sb.toString();
   }
 
+  public int compareTo() {
+    
+    return 0;
+  }
+  
+  
+  
 }
