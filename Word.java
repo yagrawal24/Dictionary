@@ -1,3 +1,11 @@
+// --== CS400 File Header Information ==--
+// Name: Teddy Arasavelli
+// Email: arasavelli@wisc.edu
+// Team: AB
+// TA: Mu Cai
+// Lecturer: Florian Heimerl
+// Notes to Grader: N/A
+
 import java.util.ArrayList;
 import java.util.List;
 
