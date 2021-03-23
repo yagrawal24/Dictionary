@@ -93,8 +93,12 @@ public class Frontend {
                 System.out.println("\t["+i+"] " + definitions.get(i));
             }
         } else {
-            System.out.println("Word not found");
             System.out.println("Perhaps you meant " + backend.getSuggestions(word) + "?");
+
+            System.out.print("Do you want to enter this word into the dictionary? (y/n): ");
+            char c = scnr.next(".").charAt(0);
+            scnr.nextLine();
+            if(c == 'y') switchModes("a");
         }
     }
 
@@ -110,6 +114,11 @@ public class Frontend {
         } else {
             System.out.println("Word not found");
         }
+    }
+
+    static void testPrintWord(String word, char bSwitch) {
+        if (backend.get(word) == null || backend.get(word).getWord().isEmpty()) // Found Word
+            if(bSwitch == 'y') switchModes("a");
     }
 
     static void additionMode() {
