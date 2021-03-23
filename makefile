@@ -33,7 +33,6 @@ TestFrontend.class: TestFrontend.java
 DataWranglerTests.class: DataWranglerTests.java
 	javac DataWranglerTests.java
 
-
 test: testData testBackend testFrontend
 
 testFrontend: compile
