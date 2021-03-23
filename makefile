@@ -35,15 +35,7 @@ FrontEndDeveloperTests.class: FrontEndDeveloperTests.java
 DataWranglerTests.class: DataWranglerTests.java
 	javac -cp .:junit5.jar DataWranglerTests.java -Xlint
 
-test: testData testBackend testFrontend
-
-testFrontend: compile
-	java -jar junit5.jar --class-path . --scan-classpath
-	
-testBackend: compile
-	java -jar junit5.jar --class-path . --scan-classpath
-
-testData: compile
+runTests: compile
 	java -jar junit5.jar --class-path . --scan-classpath
 
 clean:
