@@ -6,7 +6,7 @@ import java.util.zip.DataFormatException;
 //--== CS400 File Header Information ==--
 //Name: Anthony Reis
 //Email: atreis@wisc.edu
-//Team: AB Red
+//Team: Red
 //Role: Backend Developer
 //TA: Mu Kai
 //Lecturer: Gary Dahl
@@ -50,9 +50,9 @@ public class Backend implements BackendInterface {
    * @param origin - the origin of the word 
    */
   @Override
-  public void insert(String word, List<String> defs, String origin) {
+  public boolean insert(String word, List<String> defs, String origin) {
     Word newWord = new Word(word.toLowerCase(), defs, origin);
-    dictionary.insert(newWord);
+    return dictionary.insert(newWord);
   }
 
   /**
