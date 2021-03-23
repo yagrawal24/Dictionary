@@ -1,7 +1,7 @@
 // --== CS400 File Header Information ==--
 // Name: Teddy Arasavelli
 // Email: arasavelli@wisc.edu
-// Team: AB
+// Team: AB red
 // TA: Mu Cai
 // Lecturer: Florian Heimerl
 // Notes to Grader: N/A
