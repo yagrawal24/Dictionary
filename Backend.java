@@ -33,7 +33,8 @@ public class Backend implements BackendInterface {
     try {
       wordsList = DictionaryDataReader.readFile("FinalDictionary.txt"); // Dictionary file //
       for (int i = 0; i < wordsList.size(); i ++) {
-        dictionary.insert(wordsList.get(i));
+        if (!dictionary.contains(wordsList.get(i)))
+          dictionary.insert(wordsList.get(i));
       }
     } catch (IOException e) {
       e.printStackTrace();

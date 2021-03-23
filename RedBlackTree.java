@@ -13,8 +13,6 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Stack;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Red-Black Tree implementation with a Node inner class for representing the nodes of the tree.
@@ -435,9 +433,3 @@ public class RedBlackTree<T extends Comparable<T>> implements SortedCollectionIn
   }
 
 }
-
-
-  
-          
-  
-    
