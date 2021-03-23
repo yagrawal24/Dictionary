@@ -1,3 +1,12 @@
+// --== CS400 File Header Information ==--
+// Name: Nijae King
+// Email: nrking@wisc.edu
+// Team: Purple
+// Role: Frontend
+// TA: Mu Cai
+// Lecturer: Florian
+// Notes to Grader: n/a
+
 import java.util.*;
 
 public class Frontend {
@@ -83,6 +92,26 @@ public class Frontend {
         return false;
     }
 
+    static boolean testSwitchModes(String input) {
+        // Backup Current Mode
+        Mode saveMode = currMode;
+
+        // Switch Modes
+        char cMode = input.charAt(0);
+        currMode = getModeFromChar(cMode);
+
+        // If same mode, return true
+        if(currMode == saveMode)
+            return true;
+
+        // If success, print message and return true
+        if(currMode != null) return true;
+
+        // If fail, restore old mode; return false
+        currMode = saveMode;
+        return false;
+    }
+
     static void printWord(String word) {
         if(backend.get(word) != null && !backend.get(word).getWord().isEmpty()) { // Found Word
             List<String> definitions = backend.get(word).getDefinitions();
@@ -118,7 +147,7 @@ public class Frontend {
 
     static void testPrintWord(String word, char bSwitch) {
         if (backend.get(word) == null || backend.get(word).getWord().isEmpty()) // Found Word
-            if(bSwitch == 'y') switchModes("a");
+            if(bSwitch == 'y') testSwitchModes("a");
     }
 
     static void additionMode() {
@@ -205,6 +234,11 @@ public class Frontend {
         runLoop = false;
     }
 
+    static void testExitMode() {
+        scnr.close();
+        runLoop = false;
+    }
+
     static void enterMode() {
         System.out.println("Entered '" + currMode + "' mode");
         System.out.println("-".repeat(20));
@@ -223,6 +257,27 @@ public class Frontend {
                     break;
                 case EXIT:
                     exitMode();
+                    break;
+            }
+        }
+    }
+
+    static void testEnterMode() {
+        // Main Program Loop
+        while(runLoop == true) {
+            // Mode Switch Statement
+            switch(currMode) {
+                case ADDITION:
+                    additionMode();
+                    break;
+                case SEARCH:
+                    searchMode();
+                    break;
+                case RANDOM:
+                    randomMode();
+                    break;
+                case EXIT:
+                    testExitMode();
                     break;
             }
         }
