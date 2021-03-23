@@ -3,7 +3,7 @@ default: run
 run: compile
 	java Frontend
 
-compile: Frontend.class Backend.class BackendInterface.class DictionaryDataReader.class SortedCollectionInterface.class Word.class RedBlackTree.class TestBackend.class TestFrontend.class DataWranglerTests.class
+compile: Frontend.class Backend.class BackendInterface.class DictionaryDataReader.class SortedCollectionInterface.class Word.class RedBlackTree.class TestBackend.class FrontEndDeveloperTests.class DataWranglerTests.class
 
 Frontend.class: Frontend.java
 	javac Frontend.java
@@ -27,24 +27,24 @@ RedBlackTree.class: RedBlackTree.java
 	javac RedBlackTree.java
 
 TestBackend.class: TestBackend.java
-	javac TestBackend.java
+	javac -cp .:junit5.jar TestBackend.java -Xlint	
 
-TestFrontend.class: TestFrontend.java
-	javac TestFrontend.java
+FrontEndDeveloperTests.class: FrontEndDeveloperTests.java
+	javac -cp .:junit5.jar FrontEndDeveloperTests.java -Xlint	
 
 DataWranglerTests.class: DataWranglerTests.java
-	javac DataWranglerTests.java
+	javac -cp .:junit5.jar DataWranglerTests.java -Xlint
 
 test: testData testBackend testFrontend
 
 testFrontend: compile
-	java TestFrontend
+	java -jar junit5.jar --class-path . --scan-classpath
 	
 testBackend: compile
-	java TestBackend	
+	java -jar junit5.jar --class-path . --scan-classpath
 
 testData: compile
-	java DataWranglerTests
+	java -jar junit5.jar --class-path . --scan-classpath
 
 clean:
 	$(RM) *.class
