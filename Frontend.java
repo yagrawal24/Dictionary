@@ -88,7 +88,7 @@ public class Frontend {
             List<String> definitions = backend.get(word).getDefinitions();
             String origin = backend.get(word).getOrigin();
 
-            System.out.println(backend.get(word).getWord().toLowerCase()+" ("+backend.get(word).getOrigin() + "):");
+            System.out.println(backend.get(word).getWord().toLowerCase()+"("+backend.get(word).getOrigin() + "):");
             for(int i = 0; i < definitions.size(); i++) {
                 System.out.println("\t["+i+"] " + definitions.get(i));
             }
@@ -103,7 +103,7 @@ public class Frontend {
             List<String> definitions = backend.get(word).getDefinitions();
             String origin = backend.get(word).getOrigin();
 
-            System.out.println(backend.get(word).getWord().toLowerCase()+" ("+backend.get(word).getOrigin() + "):");
+            System.out.println(backend.get(word).getWord().toLowerCase()+"("+backend.get(word).getOrigin() + "):");
             for(int i = 0; i < definitions.size(); i++) {
                 System.out.println("\t["+i+"] " + definitions.get(i));
             }
@@ -148,12 +148,10 @@ public class Frontend {
         origin = scnr.nextLine();
 
         // Add Word to Dictionary
-        try {
-            backend.insert(word, definitions, origin);
+        if(backend.insert(word, definitions, origin))
             System.out.println("\n'"+word+"' was successfully added to your dictionary!\n");
-        } catch (IllegalArgumentException|NullPointerException err) {
-            System.out.println("\nDictionary already contains this word!");
-        }
+        else
+            System.out.println("\nDictionary already contains this word!\n");
     }
 
     static void searchMode() {
