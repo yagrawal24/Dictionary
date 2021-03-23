@@ -1,7 +1,9 @@
+default: run
+
 run: compile
 	java Frontend
 
-compile: *.class
+compile: Frontend.class Backend.class BackendInterface.class DictionaryDataReader.class SortedCollectionInterface.class Word.class RedBlackTree.class TestBackend.class TestFrontend.class DataWranglerTests.class
 
 Frontend.class: Frontend.java
 	javac Frontend.java
@@ -15,14 +17,14 @@ BackendInterface.class: BackendInterface.java
 DictionaryDataReader.class: DictionaryDataReader.java
 	javac DictionaryDataReader.java
 
+SortedCollectionInterface.class: SortedCollectionInterface.java
+	javac CortedCollectionInterface.java
+
 Word.class: Word.java
 	javac Word.java
 
 RedBlackTree.class: RedBlackTree.java
 	javac RedBlackTree.java
-
-SortedCollectionInterface.class: SortedCollectionInterface.java
-	javac CortedCollectionInterface.java
 
 TestBackend.class: TestBackend.java
 	javac TestBackend.java
