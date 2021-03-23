@@ -1,9 +1,10 @@
-/ --== CS400 File Header Information ==--
+// --== CS400 File Header Information ==--
 // Name: Teddy Arasavelli
 // Email: arasavelli@wisc.edu
-// Team: AB
+// Team: AB red
+// Role: Data Wrangler
 // TA: Mu Cai
-// Lecturer: Florian Heimerl
+// Lecturer: Florian Heiemerl
 // Notes to Grader: N/A
 
 import java.util.Iterator;
