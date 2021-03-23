@@ -18,7 +18,7 @@ DictionaryDataReader.class: DictionaryDataReader.java
 	javac DictionaryDataReader.java
 
 SortedCollectionInterface.class: SortedCollectionInterface.java
-	javac CortedCollectionInterface.java
+	javac SortedCollectionInterface.java
 
 Word.class: Word.java
 	javac Word.java
@@ -38,13 +38,13 @@ DataWranglerTests.class: DataWranglerTests.java
 test: testData testBackend testFrontend
 
 testFrontend: compile
-	java -cp .:junit5.jar FrontEndDeveloperTests
+	java -jar junit5.jar -cp . --scan-classpath -n FrontEndDeveloperTests
 
 testBackend: compile
-	java -cp .:junit5.jar TestBackend
+	java -jar junit5.jar -cp . --scan-classpath -n TestBackend
 
 testData: compile
-	java -cp .:junit5.jar DataWranglerTests
+	java -jar junit5.jar -cp . --scan-classpath -n DataWranglerTests
 
 clean:
 	$(RM) *.class
