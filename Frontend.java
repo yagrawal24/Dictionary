@@ -157,10 +157,12 @@ public class Frontend {
         origin = scnr.nextLine();
 
         // Add Word to Dictionary
-        if(backend.insert(word, definitions, origin))
-            System.out.println("\n'"+word+"' was successfully added to your dictionary!\n");
-        else
-            System.out.println("\nDictionary already contains this word!\n");
+        try {
+            backend.insert(word, definitions, origin);
+            System.out.println("\n'" + word + "' was successfully added to your dictionary!\n");
+        } catch(NoSuchElementException err) {
+            System.out.println(err.getMessage());
+        }
     }
 
     static void searchMode() {
